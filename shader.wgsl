@@ -35,12 +35,12 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 			break;
 		}
 	}
-	colour = vec3f(distance_travelled/5.0);
+	// colour = vec3f(distance_travelled/5.0);
 	return vec4f(colour, 1.0);
 }
 
 fn map(point: vec3f) -> f32 {
-	return min(min(min(min(sdCircle(point, 1.0), sdCircle(point - vec3f(0.0, 1.5, 0.0), 1.3)), sdCircle(point - vec3f(0.0, -1.0, 0.0), 0.7)), sdVerticalCapsule(point - vec3f(-1.2, 0.0, 0.0), 1.0, 0.3)), sdVerticalCapsule(point - vec3f(1.2, 0.0, 0.0), 1.0, 0.3));
+	return min(min(min(min(min(sdCircle(point, 1.0), sdCircle(point - vec3f(0.0, -1.0, 0.0), 0.7)), sdVerticalCapsule(point - vec3f(-1.2, 0.0, 0.0), 1.0, 0.3)), sdVerticalCapsule(point - vec3f(1.2, 0.0, 0.0), 1.0, 0.3)), sdVerticalCapsule(point - vec3f(0.4, 0.6, 0.0), 1.0, 0.3)), sdVerticalCapsule(point - vec3f(-0.4, 0.6, 0.0), 1.0, 0.3));
 }
 
 // float sdVerticalCapsule( vec3 p, float h, float r )
