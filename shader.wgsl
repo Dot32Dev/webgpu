@@ -11,6 +11,24 @@ fn vs_main(@location(0) pos: vec2f) -> VertexOutput {
 
 @fragment
 fn fs_main(in: VertexOutput) -> @location(0) vec4f {
+	// Turns pixels coorindate into normalised -1 to 1 space
 	let uv = (in.clip_position.xy*2.0 - 512)/512.0;
-	return vec4f(uv, 0., 1);
+
+	// Initialising
+	let ray_origin = vec3f(0.0, 0.0, -3.0); // Rays begin 3 units behind the camera on the negative Z axis
+	let ray_direction = normalize(vec3(uv, 1)); // Current pixel's ray direction is at the x/y of the UV and pointing forwards, then normalised.
+	var distance_travelled = 0.0; // A mutable variable that stores how far the ray has travelled
+
+	// Raymarching
+	for(var i: i32 = 0; i < 80; i+=1) {
+		var point = ray_origin + ray_direction * distance_travelled; // Position along the ray
+		let distance_to_object = map(point); // How far away the nearest object is
+		distance_travelled += distance_to_object; // "March" the ray by that distance
+	}
+	let colour = vec3f(1 - distance_travelled/5.0);
+	return vec4f(colour, 1);
+}
+
+fn map(point: vec3f) -> f32 {
+	return length(point) - 1.0;
 }
