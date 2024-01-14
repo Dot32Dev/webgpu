@@ -89,12 +89,12 @@ const pipeline = device.createRenderPipeline({
     vertex: {
         // The shader module we defined which includes vert and frag shaders
         module: shaderModule,
-        entryPoint: "vertexMain",
+        entryPoint: "vs_main",
         buffers: [vertexBufferLayout]
     },
     fragment: {
         module: shaderModule,
-        entryPoint: "fragmentMain",
+        entryPoint: "fs_main",
         targets: [{
             format: canvasFormat
         }]
