@@ -20,13 +20,23 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 	var distance_travelled = 0.0; // A mutable variable that stores how far the ray has travelled
 
 	// Raymarching
-	for(var i: i32 = 0; i < 80; i+=1) {
+	var colour = vec3f(0.0,0.0,0.0);
+	for(var i: f32 = 0; i < 80.0; i+=1) {
 		var point = ray_origin + ray_direction * distance_travelled; // Position along the ray
 		let distance_to_object = map(point); // How far away the nearest object is
 		distance_travelled += distance_to_object; // "March" the ray by that distance
+		
+		colour = vec3f(i)/80.0;
+
+		if distance_to_object < 0.001 {
+			break;
+		}
+		if distance_travelled > 100 {
+			break;
+		}
 	}
-	let colour = vec3f(1 - distance_travelled/5.0);
-	return vec4f(colour, 1);
+	// let colour = vec3f(distance_travelled/5.0);
+	return vec4f(colour, 1.0);
 }
 
 fn map(point: vec3f) -> f32 {
