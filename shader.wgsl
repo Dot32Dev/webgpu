@@ -35,10 +35,10 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 			break;
 		}
 	}
-	// let colour = vec3f(distance_travelled/5.0);
+	colour = vec3f(distance_travelled/5.0);
 	return vec4f(colour, 1.0);
 }
 
 fn map(point: vec3f) -> f32 {
-	return length(point) - 1.0;
+	return min(min(length(point) - 1.0, length(point - vec3f(0.0, 1.5, 0.0)) - 1.3), length(point - vec3f(0.0, -1.0, 0.0)) - 0.7);
 }
