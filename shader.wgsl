@@ -17,5 +17,5 @@ fn fragmentMain(in: VertexOutput) -> @location(0) vec4f {
 	// let x = (in.clip_position.x*2.0 - 512)/512.0;
 	// let y = (in.clip_position.y*2.0 - 512)/512.0;
 	let uv = (in.clip_position.xy*2.0 - 512)/512.0;
-	return vec4f(uv, 0.2, 1);
+	return vec4f(uv, 0., 1);
 }

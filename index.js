@@ -35,13 +35,13 @@ context.configure({
 // This is a typed array, which lets us better control what we're sending to the GPU
 const vertices = new Float32Array([
     // This is a square with two triangles
-    -0.8, -0.8, // Triangle 1
-     0.8, -0.8,
-     0.8,  0.8,
+    -1.0, -1.0, // Triangle 1
+     1.0, -1.0,
+     1.0,  1.0,
 
-    -0.8, -0.8, // Triangle 2
-     0.8,  0.8,
-    -0.8,  0.8,
+    -1.0, -1.0, // Triangle 2
+     1.0,  1.0,
+    -1.0,  1.0,
 ]);
 
 // This moves our vertices array to the GPU 
