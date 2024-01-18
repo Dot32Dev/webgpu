@@ -29,9 +29,11 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 		colour = vec3f(i)/80.0;
 
 		if distance_to_object < 0.001 {
+			colour = (1.0 - colour) * vec3f(1.0, 0.2, 0.1);
 			break;
 		}
 		if distance_travelled > 100 {
+			colour = vec3f(0.1);
 			break;
 		}
 	}
