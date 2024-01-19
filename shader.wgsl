@@ -26,10 +26,10 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 		let distance_to_object = map(point); // How far away the nearest object is
 		distance_travelled += distance_to_object; // "March" the ray by that distance
 		
-		colour = vec3f(i)/80.0;
+		// colour = vec3f(i)/80.0;
 
 		if distance_to_object < 0.001 {
-			colour = (1.0 - colour) * vec3f(1.0, 0.2, 0.1);
+			colour = (1.0 - i/80.0) * vec3f(1.0, 0.2, 0.1);
 			break;
 		}
 		if distance_travelled > 100 {
