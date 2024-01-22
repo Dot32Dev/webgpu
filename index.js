@@ -6,6 +6,10 @@ const shaderData = await response.text();
 // Get the canvas
 const canvas = document.querySelector("canvas");
 
+// Get the canvas size
+var canvas_width = canvas.width;
+var canvas_height = canvas.height;
+
 // Throw error when attempting to run from a browser that doesn't support WebGPU
 if (!navigator.gpu) {
     throw new Error("WebGPU not supported on this browser.");
@@ -73,6 +77,18 @@ const vertexBufferLayout = {
     }],
 };
 
+// Sending our canvas size over to the GPU
+// It's a vector so that one could theoretically have a different width than height
+const uniformArray = new Float32Array([canvas_width, canvas_height]);
+const uniformBuffer = device.createBuffer({
+    label: "Canvas Uniforms",
+    size: uniformArray.byteLength,
+    // Crucially, this buffer's usage is UNIFORM, not VERTEX
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+});
+// Move our array into the buffer
+device.queue.writeBuffer(uniformBuffer, 0, uniformArray);
+
 // Define the shader
 const shaderModule = device.createShaderModule({
     label: "Shader",
@@ -99,7 +115,23 @@ const pipeline = device.createRenderPipeline({
             format: canvasFormat
         }]
     }
-  });
+});
+
+// Must be created after the pipleline and is how we define what order our uniforms are in
+const bindGroup = device.createBindGroup({
+    label: "Cell renderer bind group",
+    // Defines which kinds of resources this bind group contains
+    // We can happily ask for a bind group layout because we used layout: "auto"?
+    // Apparently layout: "auto" will automatically set it up if it sees us using the bind group in the shader
+    // We ask it to create bind group layout 0, where 0 is what corrospongs to what we put in the shader
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [{
+        // I don't know why we have to tell it the binding twice
+        binding: 0,
+        // This is what we actually want to be at the binding, which is our uniform buffer
+        resource: { buffer: uniformBuffer }
+    }],
+});
 
 // We use this to give the GPU instructions
 const encoder = device.createCommandEncoder();
@@ -125,6 +157,10 @@ const pass = encoder.beginRenderPass({
 
 pass.setPipeline(pipeline);
 pass.setVertexBuffer(0, vertexBuffer);
+
+// Why are we passing bind group 0 again?
+pass.setBindGroup(0, bindGroup); // Sends the canvas size to the shader!
+
 pass.draw(vertices.length / 2); // 6 vertices
 
 // End the render pass

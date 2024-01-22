@@ -1,3 +1,6 @@
+// Get the canvas size
+@group(0) @binding(0) var<uniform> canvas: vec2f;
+
 struct VertexOutput {
     @builtin(position) clip_position: vec4<f32>,
 };
@@ -12,7 +15,7 @@ fn vs_main(@location(0) pos: vec2f) -> VertexOutput {
 @fragment
 fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 	// Turns pixels coorindate into normalised -1 to 1 space
-	let uv = (in.clip_position.xy*2.0 - 512)/512.0;
+	let uv = (in.clip_position.xy*2.0 - canvas)/canvas;
 
 	// Initialising
 	let ray_origin = vec3f(0.0, 0.0, -3.0); // Rays begin 3 units behind the camera on the negative Z axis
