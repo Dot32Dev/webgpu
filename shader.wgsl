@@ -34,6 +34,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 
 		if distance_to_object < 0.001 {
 			colour = (1.0 - i/80.0) * vec3f(1.0, 0.2, 0.1);
+			colour =  calculate_normal(point);
 			break;
 		}
 		if distance_travelled > 100 {
@@ -49,11 +50,16 @@ fn map(point: vec3f) -> f32 {
 	return min(min(min(min(min(sdCircle(point, 1.0), sdCircle(point - vec3f(0.0, -1.0, 0.0), 0.7)), sdVerticalCapsule(point - vec3f(-1.2, 0.0, 0.0), 1.0, 0.3)), sdVerticalCapsule(point - vec3f(1.2, 0.0, 0.0), 1.0, 0.3)), sdVerticalCapsule(point - vec3f(0.4, 0.6, 0.0), 1.0, 0.3)), sdVerticalCapsule(point - vec3f(-0.4, 0.6, 0.0), 1.0, 0.3));
 }
 
-// float sdVerticalCapsule( vec3 p, float h, float r )
-// {
-//   p.y -= clamp( p.y, 0.0, h );
-//   return length( p ) - r;
-// }
+fn calculate_normal(point: vec3f) -> vec3f {
+	// I dont understand this shit I just copied from google
+	let epsilon = 0.01; // small number
+	let centerDistance = map(point);
+	let xDistance = map(point + vec3f(epsilon, 0, 0));
+	let yDistance = map(point + vec3f(0, epsilon, 0));
+	let zDistance = map(point + vec3f(0, 0, epsilon));
+	return (vec3f(xDistance, yDistance, zDistance) - centerDistance) / epsilon;
+}
+
 fn sdCircle(point: vec3f, radius: f32) -> f32 {
 	return length(point) - radius;
 }
