@@ -16,10 +16,11 @@ fn vs_main(@location(0) pos: vec2f) -> VertexOutput {
 fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 	// Turns pixels coorindate into normalised -1 to 1 space
 	let uv = (in.clip_position.xy*2.0 - canvas)/canvas;
+	let aspect_ration = canvas.x / canvas.y;
 
 	// Initialising
 	let ray_origin = vec3f(0.0, 0.0, -3.0); // Rays begin 3 units behind the camera on the negative Z axis
-	let ray_direction = normalize(vec3(uv, 1)); // Current pixel's ray direction is at the x/y of the UV and pointing forwards, then normalised.
+	let ray_direction = normalize(vec3(vec2(uv.x*aspect_ration, uv.y), 1)); // Current pixel's ray direction is at the x/y of the UV and pointing forwards, then normalised.
 	var distance_travelled = 0.0; // A mutable variable that stores how far the ray has travelled
 
 	// Raymarching
