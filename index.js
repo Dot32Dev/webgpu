@@ -5,6 +5,10 @@ const shaderData = await response.text();
 
 // Get the canvas
 const canvas = document.querySelector("canvas");
+// Subtracting 16 to account for the browser's default padding 
+// This was less effort than adding CSS to the page lmao
+canvas.width = window.innerWidth - 16
+canvas.height = window.innerHeight - 16
 
 // Get the canvas size
 var canvas_width = canvas.width;
