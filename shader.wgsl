@@ -41,6 +41,9 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 			// colour = (1.0 - i/80.0) * vec3f(1.0, 0.2, 0.1);
 			// colour =  calculate_normal(point);
 			colour = (1.0 - i/80.0) * surface.colour;
+			// if calculate_normal(point).g > 0.1 {
+			// 	colour = colour - calculate_normal(point).g;
+			// }
 			// colour = colour*(0.5 + (1.0 - calculate_normal(point).g)*0.5);
 			break;
 		}
@@ -57,8 +60,10 @@ fn map(point: vec3f) -> Surface {
 	let head = sdCircle(point - vec3f(0.0, -1.0, 0.0), 0.7, vec3f(0.9,0.7,0.6));
 	let body = sdCircle(point, 1.0, vec3f(1.0, 0.2, 0.1));
 
-	let left_arm = sdVerticalCapsule(point - vec3f(-1.2, 0.0, 0.0), 1.0, 0.3, vec3f(1.0, 0.2, 0.1));
-	let right_arm = sdVerticalCapsule(point - vec3f(1.2, 0.0, 0.0), 1.0, 0.3, vec3f(1.0, 0.2, 0.1));
+	var q = vec3f(point.xy * rot2D(-0.3), point.z);
+	let left_arm = sdVerticalCapsule(q - vec3f(-1.2, 0.0, 0.0), 1.0, 0.3, vec3f(1.0, 0.2, 0.1));
+	q = vec3f(point.xy * rot2D(0.3), point.z);
+	let right_arm = sdVerticalCapsule(q - vec3f(1.2, 0.0, 0.0), 1.0, 0.3, vec3f(1.0, 0.2, 0.1));
 	let arms = min_with_colour(left_arm, right_arm);
 
 	let torso = min_with_colour(arms, body);
@@ -87,6 +92,12 @@ fn min_with_colour(object1: Surface, object2: Surface) -> Surface {
 		return object2;
 	}
 	return object1;
+}
+
+fn rot2D(angle: f32) -> mat2x2f {
+	let s = sin(angle);
+	let c = cos(angle);
+	return mat2x2f(c, -s, s, c);
 }
 
 fn sdCircle(point: vec3f, radius: f32, colour: vec3f) -> Surface {
