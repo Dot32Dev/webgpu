@@ -41,9 +41,9 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 			// colour = (1.0 - i/80.0) * vec3f(1.0, 0.2, 0.1);
 			// colour =  calculate_normal(point);
 			colour = (1.0 - i/80.0) * surface.colour;
-			// if calculate_normal(point).g > 0.1 {
-			// 	colour = colour - calculate_normal(point).g;
-			// }
+			if calculate_normal(point).g > 0.1 {
+				colour = colour - calculate_normal(point).g;
+			}
 			// colour = colour*(0.5 + (1.0 - calculate_normal(point).g)*0.5);
 			break;
 		}
