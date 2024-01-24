@@ -35,26 +35,17 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 		let surface = map(point); // How far away the nearest object is, and its cololur
 		distance_travelled += surface.signed_distance;; // "March" the ray by the distance to the nearest object
 		
-		// colour = vec3f(i)/80.0;
+		colour = surface.colour; // Sets base colour
+		// colour = (1.0 - i/80.0) * colour; // Darkens around the edges
+		colour = colour - min(max(calculate_normal(point).g, 0.0), 0.1); // Shades bottom half darker than top half
+		// colour = colour*(0.5 + (1.0 - calculate_normal(point).g)*0.5); // Smoothly shades from top to bottom 
 
 		if surface.signed_distance < 0.001 {
-			// colour = (1.0 - i/80.0) * vec3f(1.0, 0.2, 0.1);
-			// colour =  calculate_normal(point);
-			colour = surface.colour;
-			// colour = (1.0 - i/80.0) * colour;
-			// if calculate_normal(point).y > 0.0 {
-			colour = colour - min(max(calculate_normal(point).g, 0.0), 0.1);
-			// }
-			// colour = colour*(0.5 + (1.0 - calculate_normal(point).g)*0.5);
 			break;
 		}
 		if distance_travelled > 100 {
-			colour = vec3f(0.1);
+			colour = vec3f(0.1);	
 			break;
-		}
-		if i == 79 {
-			colour = surface.colour;
-			colour = colour - min(max(calculate_normal(point).g, 0.0), 0.1);
 		}
 	}
 	// colour = vec3f(distance_travelled/5.0);
