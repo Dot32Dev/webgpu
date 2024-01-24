@@ -5,4 +5,4 @@ Currently it's very familiar to using it in Rust, but the tutorial (published by
 
 I diverged from the WebGPU tutorial to make a very primative Raymarcher as described in this [Youtube tutorial for OpenGL](https://www.youtube.com/watch?v=khblXafu7iA)
 
-<img width="615" alt="Screenshot 2024-01-22 at 16 33 20" src="https://github.com/Dot32IsCool/webgpu/assets/61964090/01aea43c-07a3-438c-8477-731bb7fa1cd5">
+<img width="1104" alt="Screenshot 2024-01-23 at 8 28 08 pm" src="https://github.com/Dot32IsCool/webgpu/assets/61964090/9315fed4-e0b3-498d-88fd-cbb49c57d098">
